@@ -58,8 +58,12 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
 
         Button(
             onClick = {
-                viewModel.addTask(title , description)
-                onNavigateToHome()
+               if (title.isNotBlank() && description.isNotBlank()) {
+                   viewModel.addTask(title , description)
+
+                   onNavigateToHome()
+
+               }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
