@@ -36,7 +36,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun Header() {
+fun Header(health: Float ,  experience: Float , level: Int ) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,14 +56,13 @@ fun Header() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.End
             ) {
-                ProgressBar(progress = 1f , color = Color.Red)
+                ProgressBar(progress = health , color = Color.Red)
                 Text("Health")
 
-                ProgressBar(progress = 1f , color = Color.Yellow)
+                ProgressBar(progress = experience , color = Color.Yellow)
                 Text("Experience")
 
-                ProgressBar(progress = 1f , color = Color.Blue)
-                Text("Mana")
+
             }
         }
 
@@ -70,13 +70,14 @@ fun Header() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Level")
+            Text(text = "Level: " + level.toString())
             Text("Coins")
         }
     }
 
 
 }
+
 
 
 

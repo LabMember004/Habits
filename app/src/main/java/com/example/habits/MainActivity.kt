@@ -34,9 +34,3 @@ class MainActivity : ComponentActivity() {
 
 
 
-
-@Preview
-@Composable
-fun DisplayingUi() {
-    Header()
-}
