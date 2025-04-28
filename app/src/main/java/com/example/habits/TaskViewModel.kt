@@ -17,9 +17,22 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _tasks = MutableStateFlow<List<Items>>(emptyList())
     val tasks: StateFlow<List<Items>> = _tasks
 
+    private val _level = MutableStateFlow(1)
+    val level: StateFlow<Int> = _level
+
+    private val _health = MutableStateFlow(1f)
+    val health: StateFlow<Float> = _health
+    
+    private val _experience = MutableStateFlow(1f)
+    val experience: StateFlow<Float> = _experience
+
 
     init {
         loadTasks()
+        loadLevel()
+        loadHealth()
+        loadExperience()
+
 
     }
 
@@ -51,5 +64,81 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             taskDataStore.saveTasks(updatedList)
         }
     }
+
+     private fun loadLevel() {
+         viewModelScope.launch {
+             taskDataStore.getLevel().collect {
+                 _level.value = it
+             }
+         }
+     }
+
+    fun saveLevel(level: Int) {
+        viewModelScope.launch {
+            taskDataStore.saveLevel(level = level)
+        }
+    }
+
+    fun increaseLevel() {
+        val newLevel = _level.value +1
+        _level.value = newLevel
+        saveLevel(newLevel)
+
+    }
+
+
+
+    fun loadHealth() {
+        viewModelScope.launch {
+            taskDataStore.getHealth().collect{
+                _health.value= it
+            }
+        }
+    }
+    fun saveHealth(health: Float) {
+        viewModelScope.launch {
+            taskDataStore.saveHealth(health = health)
+        }
+    }
+    fun increaseHealth() {
+        val newHealth = _health.value + 0.1f
+        _health.value = newHealth
+        saveHealth(newHealth)
+    }
+
+    fun decreaseHealth() {
+        val newHealth = (_health.value - 0.1f).coerceAtLeast(0f)
+        _health.value = newHealth
+        saveHealth(newHealth)
+    }
+    fun loadExperience() {
+        viewModelScope.launch {
+            taskDataStore.getExperience().collect {
+                _experience.value = it
+            }
+        }
+    }
+
+    fun saveExperience(experience: Float) {
+        viewModelScope.launch { 
+            taskDataStore.saveExperience(experience = experience)
+        }
+        
+    }
+    fun increaseExperience() {
+        val newExperience = _experience.value + 0.05f
+        _experience.value = newExperience
+        saveExperience(newExperience)
+        
+    }
+    fun resetExp() {
+        val newExp = _experience.value - 1f
+        _experience.value = newExp
+        saveExperience(newExp)
+    }
+
+
+
+
 }
 

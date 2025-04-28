@@ -18,6 +18,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +38,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Header(health: Float ,  experience: Float , level: Int ) {
+
 
     Column(
         modifier = Modifier
@@ -70,7 +72,7 @@ fun Header(health: Float ,  experience: Float , level: Int ) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Level: " + level.toString())
+            Text(text = "Level: $level")
             Text("Coins")
         }
     }

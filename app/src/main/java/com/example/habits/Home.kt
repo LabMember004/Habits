@@ -28,11 +28,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -49,20 +52,25 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = "Plus",
-                modifier = Modifier.clickable {
-                    onIncreaseHealth()
-                    onIncreaseExperience()
-                }
+            Image(
+                painter = painterResource(id = R.drawable._491964_ui_minus_remove_delete_cancel_icon),
+                contentDescription = "ss",
 
+                modifier = imageModifier.clickable {
+                    onDecreaseHealth()
+                }
             )
 
-            Column {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp)
+            ) {
                 Text(text = task.title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = task.description, style = MaterialTheme.typography.bodySmall)
             }
@@ -70,13 +78,16 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
             Button(onClick = onDelete) {
                 Text("Delete")
             }
-            Icon(
-                imageVector = Icons.Filled.Clear,
-                contentDescription = "removing ",
-                modifier = Modifier.clickable {
-                    onDecreaseHealth()
+
+            Image(
+                painter = painterResource(id = R.drawable._72525_plus_icon),
+                contentDescription = "ss",
+                modifier = imageModifier.clickable {
+                    onIncreaseHealth()
+                    onIncreaseExperience()
                 }
             )
+
         }
 
     }
@@ -91,15 +102,14 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
 
     val tasks by viewModel.tasks.collectAsState()
 
+    val level by viewModel.level.collectAsState()
 
 
-    var health by remember { mutableFloatStateOf(1f) }
 
-    var experience by remember { mutableFloatStateOf(0f) }
 
-    var mana by remember { mutableFloatStateOf(1f) }
+    val health by viewModel.health.collectAsState()
 
-    var level by remember { mutableStateOf(1) }
+    val experience by viewModel.experience.collectAsState()
 
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -113,14 +123,15 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
         items(tasks) { task ->
             TaskItem(task = task, onDelete = {
                 viewModel.deleteTask(task)},
-                onIncreaseHealth = {if (health <1f) health += 0.1f  },
-                onDecreaseHealth = {if (health >0f) health -= 0.1f},
+                onIncreaseHealth = {if (health <1f) viewModel.increaseHealth()  },
+                onDecreaseHealth = {if (health >0f) viewModel.decreaseHealth()},
                 onIncreaseExperience = {
                     if(experience<1f) {
-                        experience +=0.1f
+                        viewModel.increaseExperience()
                     } else {
-                        level +=1
-                        experience = 0f
+                        viewModel.increaseLevel()
+                        viewModel.resetExp()
+
 
                     }
                 }
