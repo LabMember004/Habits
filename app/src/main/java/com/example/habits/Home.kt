@@ -69,19 +69,22 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 16.dp)
+                    .align(alignment = Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = task.title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = task.description, style = MaterialTheme.typography.bodySmall)
             }
-
             Button(onClick = onDelete) {
-                Text("Delete")
+                Text("DELETE")
             }
+
+
 
             Image(
                 painter = painterResource(id = R.drawable._72525_plus_icon),
                 contentDescription = "ss",
+
                 modifier = imageModifier.clickable {
                     onIncreaseHealth()
                     onIncreaseExperience()
@@ -142,12 +145,19 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
         }
 
     }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-    Button(
-        onClick = onNavigateToAddTask
-    ) {
-        Text("Add Habits")
-    }
+
+
+
+        }
+
 
 }
 }

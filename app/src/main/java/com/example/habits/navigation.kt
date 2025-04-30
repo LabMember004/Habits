@@ -1,6 +1,9 @@
 package com.example.habits
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,11 +15,18 @@ fun Navigation() {
 
     val taskViewModel: TaskViewModel = viewModel()
 
+    Scaffold(
+        bottomBar = {
+            BottomNavBar(navController = navController)
+        }
+    ) { innerPadding ->
+
 
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "home",
+        modifier = Modifier.padding(innerPadding)
 
     ) {
         composable(route = Screens.Home.route) {
@@ -31,5 +41,9 @@ fun Navigation() {
 
         AddHabits(navController = navController , onNavigateToHome = {navController.navigate(Screens.Home.route)} , viewModel = taskViewModel)
         }
+        composable(route = Screens.profile.route) {
+            Profile()
+        }
     }
+}
 }
