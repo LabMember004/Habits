@@ -39,6 +39,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun Header(health: Float ,  experience: Float , level: Int ) {
 
+    val groupIndex = (level) / 5
+
+    val imageRes = levelImages.getOrNull(groupIndex) ?: R.drawable.ic_launcher_background
+
 
     Column(
         modifier = Modifier
@@ -51,7 +55,7 @@ fun Header(health: Float ,  experience: Float , level: Int ) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = imageRes),
                 contentDescription = "Test"
             )
             Column(

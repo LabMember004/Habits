@@ -136,6 +136,20 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         _experience.value = newExp
         saveExperience(newExp)
     }
+    fun resetLife() {
+
+        val newLvl=1
+        _level.value = newLvl
+        saveLevel(newLvl)
+
+        _experience.value = 0f
+        saveExperience(0f)
+
+
+
+
+    }
+
 
 
 

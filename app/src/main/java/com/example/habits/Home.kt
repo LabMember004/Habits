@@ -131,12 +131,22 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
                 onIncreaseExperience = {
                     if(experience<1f) {
                         viewModel.increaseExperience()
-                    } else {
+                    }
+
+
+                    else {
                         viewModel.increaseLevel()
                         viewModel.resetExp()
 
 
                     }
+                    if(health <=0) {
+                        viewModel.resetLife()
+
+
+                    }
+
+
                 }
 
 
