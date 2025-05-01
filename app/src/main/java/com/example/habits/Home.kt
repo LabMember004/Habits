@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -46,9 +48,12 @@ import kotlin.math.exp
 
 
 @Composable
-fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit) {
+fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth().
+            padding(vertical = 4.dp)
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
@@ -101,7 +106,7 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
 }
 
 @Composable
-fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewModel: TaskViewModel ) {
+fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
     val tasks by viewModel.tasks.collectAsState()
 
@@ -123,6 +128,7 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
 
 
     LazyColumn {
+
         items(tasks) { task ->
             TaskItem(task = task, onDelete = {
                 viewModel.deleteTask(task)},
@@ -147,6 +153,9 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
                     }
 
 
+                },
+                onClick = {
+                    navController.navigate("taskDetail/${task.id}")
                 }
 
 
@@ -154,6 +163,7 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
             )
         }
 
+    }
     }
         Column(
             modifier = Modifier
@@ -170,7 +180,7 @@ fun Home(navController: NavController, onNavigateToAddTask: () -> Unit , viewMod
 
 
 }
-}
+
 
 
 

@@ -1,5 +1,6 @@
 package com.example.habits
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -15,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -61,7 +63,6 @@ fun Navigation() {
         composable(route = Screens.Home.route) {
             Home(
                 navController = navController,
-                onNavigateToAddTask = { navController.navigate(Screens.addTask.route) },
                 viewModel = taskViewModel
             )
 
@@ -72,6 +73,16 @@ fun Navigation() {
         }
         composable(route = Screens.profile.route) {
             Profile()
+        }
+        composable(route = "taskDetail/{taskId}" ) { backStackEntry ->
+            val taskId= backStackEntry.arguments?.getString("taskId")
+            val task = taskViewModel.tasks.value.find { it.id == taskId }
+
+            if(task != null) {
+                TaskDetailScreen(task = task)
+
+            }
+
         }
     }
 }
