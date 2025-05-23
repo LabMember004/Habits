@@ -41,6 +41,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         loadLevel()
         loadHealth()
         loadExperience()
+        loadPositiveClicks()
 
 
     }
@@ -156,10 +157,27 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         saveExperience(0f)
 
     }
+    fun savePositiveClicks(positiveClicks: Int) {
+        viewModelScope.launch {
+            taskDataStore.savePositiveClicks(positiveClicks = positiveClicks)
+        }
+
+    }
     fun increasePositiveClicks() {
-        _positiveClicks.value++
+        val newPositiveClicks = _positiveClicks.value +1
+        _positiveClicks.value = newPositiveClicks
+        savePositiveClicks(newPositiveClicks)
+
+
     }
 
+    fun loadPositiveClicks() {
+        viewModelScope.launch {
+            taskDataStore.getPositiveClicks().collect{
+                _positiveClicks.value = it
+            }
+        }
+    }
 
 
 
