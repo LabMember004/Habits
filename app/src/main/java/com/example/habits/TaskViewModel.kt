@@ -1,6 +1,12 @@
 package com.example.habits
 import android.app.Application
 import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +31,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     
     private val _experience = MutableStateFlow(1f)
     val experience: StateFlow<Float> = _experience
+
+    private val _positiveClicks = MutableStateFlow(0)
+    val positiveClicks: StateFlow<Int> = _positiveClicks
 
 
     init {
@@ -104,6 +113,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         val newHealth = _health.value + 0.1f
         _health.value = newHealth
         saveHealth(newHealth)
+
     }
 
     fun decreaseHealth() {
@@ -126,7 +136,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         
     }
     fun increaseExperience() {
-        val newExperience = _experience.value + 0.05f
+        val newExperience = _experience.value + 0.5f
         _experience.value = newExperience
         saveExperience(newExperience)
         
@@ -145,11 +155,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         _experience.value = 0f
         saveExperience(0f)
 
-
-
-
     }
-
+    fun increasePositiveClicks() {
+        _positiveClicks.value++
+    }
 
 
 

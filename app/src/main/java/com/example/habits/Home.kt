@@ -48,7 +48,7 @@ import kotlin.math.exp
 
 
 @Composable
-fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit) {
+fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth().
@@ -93,6 +93,9 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
                 modifier = imageModifier.clickable {
                     onIncreaseHealth()
                     onIncreaseExperience()
+                    onIncreasePositiveClicks()
+
+
                 }
             )
 
@@ -120,6 +123,8 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
     val experience by viewModel.experience.collectAsState()
 
 
+
+
     Column(modifier = Modifier.fillMaxSize()) {
         Header(health = health , experience =experience , level = level )
 
@@ -132,7 +137,10 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
         items(tasks) { task ->
             TaskItem(task = task, onDelete = {
                 viewModel.deleteTask(task)},
-                onIncreaseHealth = {if (health <1f) viewModel.increaseHealth()  },
+                onIncreaseHealth = {
+                    if (health <1f) {
+                        viewModel.increaseHealth() }
+                                   },
                 onDecreaseHealth = {if (health >0f) viewModel.decreaseHealth()},
                 onIncreaseExperience = {
                     if(experience<1f) {
@@ -156,7 +164,8 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
                 },
                 onClick = {
                     navController.navigate("taskDetail/${task.id}")
-                }
+                },
+                onIncreasePositiveClicks = {viewModel.increasePositiveClicks()}
 
 
 

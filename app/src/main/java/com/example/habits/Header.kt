@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun Header(health: Float ,  experience: Float , level: Int ) {
 
-    val groupIndex = (level) / 5
+    val groupIndex = level / 5
 
     val imageRes = levelImages.getOrNull(groupIndex) ?: R.drawable.ic_launcher_background
 
