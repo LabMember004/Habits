@@ -86,4 +86,5 @@ class TaskDataStore(private val context: Context) {
                 preferences[POSITIVE_CLICKS] ?: 0
             }
     }
+
 }

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,6 +35,7 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
 
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
+    val createdAt = System.currentTimeMillis()
 
 
 
@@ -59,7 +61,7 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
         Button(
             onClick = {
                if (title.isNotBlank() && description.isNotBlank()) {
-                   viewModel.addTask(title , description)
+                   viewModel.addTask(title , description, createdAt)
 
                    onNavigateToHome()
 
@@ -70,6 +72,7 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
             Text("Add Task")
         }
         Spacer(modifier = Modifier.height(16.dp))
+        Log.d("TEST" , "THE TASK IS CREATED AT $createdAt")
 
 
         }

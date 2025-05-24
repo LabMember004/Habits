@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.UUID
+import kotlin.math.exp
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -54,8 +55,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun addTask(title: String, description: String) {
-        val newTask = Items(id = UUID.randomUUID().toString(), title = title, description = description)
+    fun addTask(title: String, description: String , createdAt: Long) {
+        val newTask = Items(id = UUID.randomUUID().toString(), title = title, description = description , createdAt = createdAt)
         val updateList = _tasks.value + newTask
 
         _tasks.value = updateList
@@ -92,7 +93,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun increaseLevel() {
         val newLevel = _level.value +1
         _level.value = newLevel
+        resetExp()
         saveLevel(newLevel)
+
 
     }
 
@@ -155,7 +158,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
         _experience.value = 0f
         saveExperience(0f)
+        IncreaseHealthToFull()
 
+    }
+    private fun IncreaseHealthToFull() {
+        val newHP = 1f
+        _health.value = newHP
+        saveHealth(newHP)
     }
     fun savePositiveClicks(positiveClicks: Int) {
         viewModelScope.launch {

@@ -33,6 +33,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlin.math.exp
 
 
@@ -123,7 +125,23 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
     val experience by viewModel.experience.collectAsState()
 
 
+    LaunchedEffect(Unit) {
+        snapshotFlow { experience }
+            .distinctUntilChanged()
+            .collect { exp ->
+                if (exp >= 1f) {
+                    viewModel.increaseLevel()
+                }
+            }
+    }
 
+    LaunchedEffect(health) {
+        when {
+            health <=0f -> {
+                viewModel.resetLife()
+            }
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Header(health = health , experience =experience , level = level )
@@ -134,6 +152,9 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
     LazyColumn {
 
+
+
+
         items(tasks) { task ->
             TaskItem(task = task, onDelete = {
                 viewModel.deleteTask(task)},
@@ -143,22 +164,13 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
                                    },
                 onDecreaseHealth = {if (health >0f) viewModel.decreaseHealth()},
                 onIncreaseExperience = {
-                    if(experience<1f) {
+                    if(experience<=1f) {
                         viewModel.increaseExperience()
                     }
 
 
-                    else {
-                        viewModel.increaseLevel()
-                        viewModel.resetExp()
 
 
-                    }
-                    if(health <=0) {
-                        viewModel.resetLife()
-
-
-                    }
 
 
                 },
