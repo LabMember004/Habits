@@ -24,7 +24,7 @@ import java.util.Locale
 fun TaskDetailScreen(task: Items, viewModel: TaskViewModel ) {
 
 
-    val positiveClick by viewModel.positiveClicks.collectAsState()
+    val positiveClick by viewModel.getPositiveClicksForTask(task.id).collectAsState(initial = 0)
 
 
 

@@ -10,9 +10,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.math.exp
@@ -33,8 +35,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _experience = MutableStateFlow(1f)
     val experience: StateFlow<Float> = _experience
 
-    private val _positiveClicks = MutableStateFlow(0)
-    val positiveClicks: StateFlow<Int> = _positiveClicks
+
 
 
     init {
@@ -42,7 +43,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         loadLevel()
         loadHealth()
         loadExperience()
-        loadPositiveClicks()
+
 
 
     }
@@ -166,27 +167,24 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         _health.value = newHP
         saveHealth(newHP)
     }
-    fun savePositiveClicks(positiveClicks: Int) {
+    fun getPositiveClicksForTask(taskId:String): Flow<Int> {
+
+        return taskDataStore.getPositiveClicksForEachTask(taskId)
+
+
+    }
+    fun increasePositiveClicksForTask(taskId:String) {
         viewModelScope.launch {
-            taskDataStore.savePositiveClicks(positiveClicks = positiveClicks)
+
+            val currentClicks = taskDataStore.getPositiveClicksForEachTask(taskId).firstOrNull() ?:0
+            taskDataStore.savePositiveClicksForEachTask(taskId, currentClicks +1)
         }
 
-    }
-    fun increasePositiveClicks() {
-        val newPositiveClicks = _positiveClicks.value +1
-        _positiveClicks.value = newPositiveClicks
-        savePositiveClicks(newPositiveClicks)
 
 
     }
 
-    fun loadPositiveClicks() {
-        viewModelScope.launch {
-            taskDataStore.getPositiveClicks().collect{
-                _positiveClicks.value = it
-            }
-        }
-    }
+
 
 
 

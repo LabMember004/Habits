@@ -20,7 +20,6 @@ class TaskDataStore(private val context: Context) {
     val LEVEL_KEY = intPreferencesKey("level")
     val HEALTH_KEY = floatPreferencesKey("health")
     val EXPERIENCE_KEY = floatPreferencesKey("experience")
-    val POSITIVE_CLICKS = intPreferencesKey("positiveClicks")
 
     suspend fun saveTasks(tasks: List<Items>) {
         val json = Gson().toJson(tasks)
@@ -75,15 +74,17 @@ class TaskDataStore(private val context: Context) {
                 preferences[EXPERIENCE_KEY] ?: 1f
             }
     }
-    suspend fun savePositiveClicks(positiveClicks: Int) {
+    suspend fun savePositiveClicksForEachTask(taskId:String , clicks: Int) {
+        val key = intPreferencesKey("positive_clicks_$taskId")
         context.dataStore.edit { preferences ->
-            preferences[POSITIVE_CLICKS] = positiveClicks
+            preferences[key] = clicks
         }
     }
-    fun getPositiveClicks(): Flow<Int> {
+    fun getPositiveClicksForEachTask(taskId:String): Flow<Int> {
+        val key = intPreferencesKey("positive_clicks_$taskId")
         return context.dataStore.data
             .map { preferences->
-                preferences[POSITIVE_CLICKS] ?: 0
+                preferences[key] ?: 0
             }
     }
 

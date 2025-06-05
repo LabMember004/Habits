@@ -177,7 +177,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
                 onClick = {
                     navController.navigate("taskDetail/${task.id}")
                 },
-                onIncreasePositiveClicks = {viewModel.increasePositiveClicks()}
+                onIncreasePositiveClicks = {viewModel.increasePositiveClicksForTask(task.id)}
 
 
 
