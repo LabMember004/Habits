@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.google.gson.Gson
@@ -20,6 +21,7 @@ class TaskDataStore(private val context: Context) {
     val LEVEL_KEY = intPreferencesKey("level")
     val HEALTH_KEY = floatPreferencesKey("health")
     val EXPERIENCE_KEY = floatPreferencesKey("experience")
+
 
     suspend fun saveTasks(tasks: List<Items>) {
         val json = Gson().toJson(tasks)
@@ -87,5 +89,9 @@ class TaskDataStore(private val context: Context) {
                 preferences[key] ?: 0
             }
     }
+
+
+
+
 
 }

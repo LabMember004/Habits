@@ -35,7 +35,7 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
 
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    val createdAt = System.currentTimeMillis()
+
 
 
 
@@ -61,7 +61,9 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
         Button(
             onClick = {
                if (title.isNotBlank() && description.isNotBlank()) {
-                   viewModel.addTask(title , description, createdAt)
+                   val createdAt  = System.currentTimeMillis()
+
+                   viewModel.addTask(title , description , createdAt)
 
                    onNavigateToHome()
 
@@ -72,7 +74,7 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
             Text("Add Task")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Log.d("TEST" , "THE TASK IS CREATED AT $createdAt")
+
 
 
         }

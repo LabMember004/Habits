@@ -33,6 +33,7 @@ fun TaskDetailScreen(task: Items, viewModel: TaskViewModel ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Description: ${task.description}", style = MaterialTheme.typography.bodyLarge)
         Text(text = "How many times you clicked on positive: $positiveClick" )
+        Text(text= formatTimestamp(task.createdAt))
 
 
 

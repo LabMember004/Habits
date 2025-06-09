@@ -62,6 +62,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
         _tasks.value = updateList
 
+
+
+
         viewModelScope.launch {
             taskDataStore.saveTasks(updateList)
         }
@@ -183,6 +186,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
 
     }
+
 
 
 
