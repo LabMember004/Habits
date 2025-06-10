@@ -79,7 +79,7 @@ fun Navigation() {
             val task = taskViewModel.tasks.value.find { it.id == taskId }
 
             if(task != null) {
-                TaskDetailScreen(task = task , viewModel())
+                TaskDetailScreen(task = task , viewModel(), navController = navController)
 
             }
 

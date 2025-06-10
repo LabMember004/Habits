@@ -50,7 +50,7 @@ import kotlin.math.exp
 
 
 @Composable
-fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit) {
+fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth().
@@ -82,9 +82,7 @@ fun TaskItem( task: Items, onDelete: () -> Unit, onIncreaseHealth: () -> Unit, o
                 Text(text = task.title, style = MaterialTheme.typography.bodyLarge)
                 Text(text = task.description, style = MaterialTheme.typography.bodySmall)
             }
-            Button(onClick = onDelete) {
-                Text("DELETE")
-            }
+
 
 
 
@@ -156,8 +154,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
 
         items(tasks) { task ->
-            TaskItem(task = task, onDelete = {
-                viewModel.deleteTask(task)},
+            TaskItem(task = task,
                 onIncreaseHealth = {
                     if (health <1f) {
                         viewModel.increaseHealth() }
