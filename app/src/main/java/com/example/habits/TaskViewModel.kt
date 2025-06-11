@@ -35,6 +35,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _experience = MutableStateFlow(1f)
     val experience: StateFlow<Float> = _experience
 
+    private val _coin = MutableStateFlow(0)
+    val coin: StateFlow<Int> = _coin
+
 
 
 
@@ -43,6 +46,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         loadLevel()
         loadHealth()
         loadExperience()
+        loadCoin()
 
 
 
@@ -148,6 +152,26 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         _experience.value = newExperience
         saveExperience(newExperience)
         
+    }
+    fun loadCoin() {
+        viewModelScope.launch {
+            taskDataStore.getCoin().collect{
+                _coin.value =it
+            }
+        }
+    }
+
+    fun saveCoin(coin:Int) {
+        viewModelScope.launch {
+            taskDataStore.saveCoin(coin = coin)
+
+        }
+    }
+
+    fun increaseCoin() {
+        val newCoin = _coin.value + 3
+        _coin.value = newCoin
+        saveCoin(newCoin)
     }
     fun resetExp() {
         val newExp = _experience.value - 1f

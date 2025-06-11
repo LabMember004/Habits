@@ -21,6 +21,7 @@ class TaskDataStore(private val context: Context) {
     val LEVEL_KEY = intPreferencesKey("level")
     val HEALTH_KEY = floatPreferencesKey("health")
     val EXPERIENCE_KEY = floatPreferencesKey("experience")
+    val COIN_KEY = intPreferencesKey("coin")
 
 
     suspend fun saveTasks(tasks: List<Items>) {
@@ -89,7 +90,19 @@ class TaskDataStore(private val context: Context) {
                 preferences[key] ?: 0
             }
     }
+    suspend fun saveCoin(coin:Int) {
+        context.dataStore.edit {preferences ->
+            preferences[COIN_KEY] = coin
+        }
+    }
 
+    fun getCoin(): Flow<Int> {
+        return context.dataStore.data
+            .map { preferences->
+                preferences[COIN_KEY] ?: 0
+
+            }
+    }
 
 
 

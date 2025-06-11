@@ -63,7 +63,7 @@ import kotlin.math.exp
 
 
 @Composable
-fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit) {
+fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit, onIncreaseCoin:() -> Unit) {
 
 
     Card(
@@ -130,6 +130,7 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
                         onIncreaseHealth()
                         onIncreaseExperience()
                         onIncreasePositiveClicks()
+                        onIncreaseCoin()
                     },
                 contentAlignment = Alignment.Center
 
@@ -167,6 +168,8 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
     val experience by viewModel.experience.collectAsState()
 
+    val coin by viewModel.coin.collectAsState()
+
 
     LaunchedEffect(Unit) {
         snapshotFlow { experience }
@@ -187,7 +190,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Header(health = health , experience =experience , level = level )
+        Header(health = health , experience =experience , level = level , coin = coin )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -219,7 +222,8 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
                 onClick = {
                     navController.navigate("taskDetail/${task.id}")
                 },
-                onIncreasePositiveClicks = {viewModel.increasePositiveClicksForTask(task.id)}
+                onIncreasePositiveClicks = {viewModel.increasePositiveClicksForTask(task.id)},
+                onIncreaseCoin = {viewModel.increaseCoin()}
 
 
 
