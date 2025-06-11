@@ -39,7 +39,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun Header(health: Float ,  experience: Float , level: Int ) {
+fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
 
     val groupIndex = level / 5
 
@@ -81,7 +81,7 @@ fun Header(health: Float ,  experience: Float , level: Int ) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "Level: $level")
-            Text("Coins")
+            Text("Coins : $coin")
         }
     }
 
