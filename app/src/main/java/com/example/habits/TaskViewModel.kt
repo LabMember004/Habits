@@ -2,11 +2,13 @@ package com.example.habits
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -209,6 +211,21 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
 
 
+    }
+
+    fun buyingAnItem(item:ShopItemData) {
+        if(_coin.value >=item.cost ) {
+            val newCoin = _coin.value - item.cost
+            saveCoin(newCoin)
+            when(item.effect) {
+                is ShopEffect.DoubleXP ->{
+
+                }
+                is ShopEffect.IncreaseHealth -> {
+                    resetLife()
+                }
+            }
+        }
     }
 
 
