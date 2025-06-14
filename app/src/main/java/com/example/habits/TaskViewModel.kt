@@ -40,6 +40,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _coin = MutableStateFlow(0)
     val coin: StateFlow<Int> = _coin
 
+    private val _doubleXPLevel = MutableStateFlow(0)
+    val doubleXPLevel: StateFlow<Int> = _doubleXPLevel
+
 
 
 
@@ -49,6 +52,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         loadHealth()
         loadExperience()
         loadCoin()
+        loadDoubleExpLevel()
 
 
 
@@ -150,7 +154,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         
     }
     fun increaseExperience() {
-        val newExperience = _experience.value + 0.5f
+        val baseExp = 0.5f
+        val bonusMultiplier = 1 + (_doubleXPLevel.value * 0.3f)
+        val gainedExp = baseExp * bonusMultiplier
+        val newExperience = _experience.value + gainedExp
         _experience.value = newExperience
         saveExperience(newExperience)
 
@@ -217,12 +224,26 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
+    private fun loadDoubleExpLevel() {
+        viewModelScope.launch {
+            taskDataStore.getDoubleExpLevel().collect {
+                _doubleXPLevel.value = it
+            }
+        }
+    }
+
+
     fun buyingAnItem(item:ShopItemData) {
         if(_coin.value >=item.cost ) {
             val newCoin = _coin.value - item.cost
             saveCoin(newCoin)
             when(item.effect) {
                 is ShopEffect.DoubleXP ->{
+                    val newLevel = _doubleXPLevel.value +1
+                    _doubleXPLevel.value = newLevel
+                    viewModelScope.launch {
+                        taskDataStore.saveDoubleExpLevel(newLevel)
+                    }
 
                 }
                 is ShopEffect.IncreaseHealth -> {
