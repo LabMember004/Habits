@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -43,6 +44,9 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _doubleXPLevel = MutableStateFlow(0)
     val doubleXPLevel: StateFlow<Int> = _doubleXPLevel
 
+    private val _doubleCoinLevel = MutableStateFlow(0)
+    val doubleCoinLevel : StateFlow<Int> = _doubleCoinLevel
+
 
 
 
@@ -53,6 +57,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         loadExperience()
         loadCoin()
         loadDoubleExpLevel()
+        loadDoubleCoinLevel()
 
 
 
@@ -180,7 +185,10 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun increaseCoin() {
-        val newCoin = _coin.value + 3
+        val baseCoin = 3
+        val bonusMultiplier = 1+ (_doubleCoinLevel.value *1)
+        val gainedCoin = baseCoin * bonusMultiplier
+        val newCoin = _coin.value + gainedCoin
         _coin.value = newCoin
         saveCoin(newCoin)
     }
@@ -231,6 +239,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+    private fun loadDoubleCoinLevel() {
+        viewModelScope.launch {
+            taskDataStore.getDoubleCoinLevel().collect{
+                _doubleCoinLevel.value = it
+            }
+        }
+    }
 
 
     fun buyingAnItem(item:ShopItemData) {
@@ -248,6 +263,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
                 }
                 is ShopEffect.IncreaseHealth -> {
                     IncreaseHealthToFull()
+
+                }
+                is ShopEffect.DoubleCoin -> {
+                    val newDoubleCoin = _doubleCoinLevel.value +1
+                    _doubleCoinLevel.value = newCoin
+                    viewModelScope.launch {
+                        taskDataStore.saveDoubleCoinLevel(newDoubleCoin)
+                    }
 
                 }
             }

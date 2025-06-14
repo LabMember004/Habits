@@ -52,8 +52,9 @@ fun ShopItems(item: ShopItemData , onBuyClick: () -> Unit) {
 fun AllItemsInShop(viewModel: TaskViewModel) {
 
     val itemsInsideShop = listOf(
-        ShopItemData(1 , "DOUBLE EXP" , " GIVES DOUBLE EXP" , 20 , effect = ShopEffect.DoubleXP),
-        ShopItemData(2 , "RESTORE HP" , " RESTORE HEALTH TO FULL HP" , 50 , effect = ShopEffect.IncreaseHealth)
+        ShopItemData(1 , "DOUBLE EXP" , " GIVES DOUBLE EXP" , 70 , effect = ShopEffect.DoubleXP),
+        ShopItemData(2 , "RESTORE HP" , " RESTORE HEALTH TO FULL HP" , 20 , effect = ShopEffect.IncreaseHealth),
+        ShopItemData(3 , "Double gold" , "GIVES DOUBLE GOLD " , 100 , effect = ShopEffect.DoubleCoin)
 
 
     )

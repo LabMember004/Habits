@@ -13,4 +13,5 @@ data class ShopItemData(
 sealed class ShopEffect {
     object DoubleXP: ShopEffect()
     object IncreaseHealth: ShopEffect()
+    object DoubleCoin: ShopEffect()
 }
