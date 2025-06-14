@@ -153,6 +153,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         val newExperience = _experience.value + 0.5f
         _experience.value = newExperience
         saveExperience(newExperience)
+
+
         
     }
     fun loadCoin() {
@@ -180,6 +182,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         _experience.value = newExp
         saveExperience(newExp)
     }
+
+
     fun resetLife() {
 
         val newLvl=1
@@ -222,11 +226,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
                 }
                 is ShopEffect.IncreaseHealth -> {
-                    resetLife()
+                    IncreaseHealthToFull()
+
                 }
             }
         }
     }
+
+
 
 
 
