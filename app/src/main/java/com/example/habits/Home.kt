@@ -1,5 +1,6 @@
 package com.example.habits
 
+import android.app.Dialog
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,12 +19,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -52,9 +56,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -170,6 +176,18 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
     val coin by viewModel.coin.collectAsState()
 
+    var showDeathDialog by remember { mutableStateOf(false) }
+
+
+    if(showDeathDialog) {
+        Reaching0HpPopUpMessage(
+            onDismissRequest = {
+                showDeathDialog = false
+
+            }
+        )
+    }
+
 
     LaunchedEffect(Unit) {
         snapshotFlow { experience }
@@ -185,6 +203,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
         when {
             health <=0f -> {
                 viewModel.resetLife()
+                showDeathDialog = true
             }
         }
     }
@@ -251,7 +270,26 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
 
 
+@Composable
+fun Reaching0HpPopUpMessage(onDismissRequest: () -> Unit) {
 
+    Dialog(onDismissRequest = {onDismissRequest()}) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Text(text = "You have reached 0 health, therefore your pet died and you have to start at the beginning",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
+                textAlign = TextAlign.Center)
+
+        }
+    }
+}
 
 
 
