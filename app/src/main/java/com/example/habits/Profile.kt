@@ -1,5 +1,7 @@
 package com.example.habits
 
+import android.media.Image
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,13 +44,10 @@ fun Profile(viewModel: TaskViewModel = viewModel()) {
 }
 
 
-
-
-
-
-
 @Composable
 fun ShopItems(item: ShopItemData, onBuyClick: () -> Unit) {
+
+    Spacer(modifier = Modifier.height(100.dp))
     Card(
         modifier = Modifier
             .padding(8.dp)
@@ -77,9 +76,7 @@ fun ShopItems(item: ShopItemData, onBuyClick: () -> Unit) {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.LightGray)
-
-                    ,
+                        .background(Color.LightGray),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -97,28 +94,49 @@ fun ShopItems(item: ShopItemData, onBuyClick: () -> Unit) {
 }
 
 
-
 @Composable
 fun AllItemsInShop(viewModel: TaskViewModel) {
-
+    val coin by viewModel.coin.collectAsState()
     val itemsInsideShop = listOf(
-        ShopItemData(1 , "DOUBLE EXP" , " GIVES DOUBLE EXP" , 70 , effect = ShopEffect.DoubleXP),
-        ShopItemData(2 , "RESTORE HP" , " RESTORE HEALTH TO FULL HP" , 20 , effect = ShopEffect.IncreaseHealth),
-        ShopItemData(3 , "Double gold" , "GIVES DOUBLE GOLD " , 100 , effect = ShopEffect.DoubleCoin)
-
-
+        ShopItemData(1, "DOUBLE EXP", "GIVES DOUBLE EXP", 70, effect = ShopEffect.DoubleXP),
+        ShopItemData(
+            2,
+            "RESTORE HP",
+            "RESTORE HEALTH TO FULL HP",
+            20,
+            effect = ShopEffect.IncreaseHealth
+        ),
+        ShopItemData(3, "Double gold", "GIVES DOUBLE GOLD", 100, effect = ShopEffect.DoubleCoin)
     )
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize(),
+    Column(modifier = Modifier.fillMaxSize()) {
 
-        contentPadding = PaddingValues(8.dp)
-    )  {
-        items(itemsInsideShop) { item ->
-            ShopItems(item = item , onBuyClick = {
-                viewModel.buyingAnItem(item)
-            })
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "You have $coin")
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.coin),
+                contentDescription = "Coin",
+                modifier = Modifier.size(25.dp),
+                tint = Color.Unspecified
+            )
         }
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(8.dp)
+        ) {
+            items(itemsInsideShop) { item ->
+                ShopItems(item = item) {
+                    viewModel.buyingAnItem(item)
+                }
+            }
+        }
+
     }
 }
