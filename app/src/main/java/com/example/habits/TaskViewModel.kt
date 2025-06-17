@@ -47,6 +47,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _doubleCoinLevel = MutableStateFlow(0)
     val doubleCoinLevel : StateFlow<Int> = _doubleCoinLevel
 
+    private val _shopMessage = MutableStateFlow<String?>(null)
+    val shopMessage:StateFlow<String?> = _shopMessage
+
+
+
+
 
 
 
@@ -274,7 +280,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
                 }
             }
+            _shopMessage.value = "Item Bought Successfully"
+        } else {
+            _shopMessage.value = "Not Enough Coin"
         }
+    }
+    fun clearShopMessage() {
+        _shopMessage.value = null
     }
 
 
