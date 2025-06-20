@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -46,7 +47,7 @@ fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
 
     val groupIndex = level / 5
 
-    val imageRes = levelImages.getOrNull(groupIndex) ?: R.drawable.ic_launcher_background
+    val imageRes = petImages.getOrNull(groupIndex) ?: R.drawable.ic_launcher_background
 
 
 
@@ -63,17 +64,19 @@ fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.pet_happy_state),
+                modifier = Modifier.size(150.dp),
                 contentDescription = "Test"
             )
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.End
             ) {
-                ProgressBar(progress = health , color = Color.Red)
                 Text("Health")
-
-                ProgressBar(progress = experience , color = Color.Yellow)
+                ProgressBar(progress = health , color = Color.Red)
+                Spacer(modifier = Modifier.height(12.dp))
                 Text("Experience")
+                ProgressBar(progress = experience , color = Color.Yellow)
+
 
 
             }
@@ -111,9 +114,12 @@ fun ProgressBar(progress: Float , color: Color) {
     LinearProgressIndicator(
         progress = progress,
         color = color,
+        trackColor = Color(0xfff0e4d8),
+
         modifier = Modifier
             .height(20.dp)
             .clip(shape = RoundedCornerShape(20.dp))
+
     )
 }
 

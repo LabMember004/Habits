@@ -1,14 +1,10 @@
 package com.example.habits
 
-val levelImages = listOf(
-    R.drawable.eevee1,
-    R.drawable.eevee2,
-    R.drawable.eevee3,
-    R.drawable.eevee4,
-    R.drawable.eevee5,
-    R.drawable.eevee6,
-    R.drawable.eevee7,
-    R.drawable.eevee8,
-    R.drawable.eevee9
+val petImages = listOf(
+    R.drawable.pet_sad_state,
+    R.drawable.pet_happy_state,
+    R.drawable.pet_neutral_state,
+
 
 )
+
