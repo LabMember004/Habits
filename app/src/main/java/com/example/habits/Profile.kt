@@ -42,9 +42,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun Profile(viewModel: TaskViewModel = viewModel()) {
 
+    BackgroundWrapper {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+
     AllItemsInShop(viewModel)
 }
 
+    }
+}
 
 @Composable
 fun ShopItems(item: ShopItemData, onBuyClick: () -> Unit) {

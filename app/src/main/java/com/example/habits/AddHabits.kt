@@ -39,6 +39,10 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
 
 
 
+    BackgroundWrapper {
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+
 
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -80,5 +84,6 @@ fun AddHabits(navController: NavController , onNavigateToHome : () -> Unit , vie
         }
     }
 
-
+    }
+}
 

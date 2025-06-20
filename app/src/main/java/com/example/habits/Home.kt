@@ -208,49 +208,55 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Header(health = health , experience =experience , level = level , coin = coin )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-
-    LazyColumn {
-
-
-
-
-        items(tasks) { task ->
-            TaskItem(task = task,
-                onIncreaseHealth = {
-                    if (health <1f) {
-                        viewModel.increaseHealth() }
-                                   },
-                onDecreaseHealth = {if (health >0f) viewModel.decreaseHealth()},
-                onIncreaseExperience = {
-                    if(experience<=1f) {
-                        viewModel.increaseExperience()
-                    }
-
-
-
-
-
-
-                },
-                onClick = {
-                    navController.navigate("taskDetail/${task.id}")
-                },
-                onIncreasePositiveClicks = {viewModel.increasePositiveClicksForTask(task.id)},
-                onIncreaseCoin = {viewModel.increaseCoin()}
-
-
-
-            )
+        BackgroundWrapper {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Header(
+                    health = health,
+                    experience = experience,
+                    level = level,
+                    coin = coin
+                )
+            }
         }
+    Spacer(modifier = Modifier.height(16.dp))
 
-    }
-    }
+        Column(modifier = Modifier.fillMaxSize()) {
+            Header(health = health, experience = experience, level = level, coin = coin)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+
+            LazyColumn {
+
+
+                items(tasks) { task ->
+                    TaskItem(task = task,
+                        onIncreaseHealth = {
+                            if (health < 1f) {
+                                viewModel.increaseHealth()
+                            }
+                        },
+                        onDecreaseHealth = { if (health > 0f) viewModel.decreaseHealth() },
+                        onIncreaseExperience = {
+                            if (experience <= 1f) {
+                                viewModel.increaseExperience()
+                            }
+
+
+                        },
+                        onClick = {
+                            navController.navigate("taskDetail/${task.id}")
+                        },
+                        onIncreasePositiveClicks = { viewModel.increasePositiveClicksForTask(task.id) },
+                        onIncreaseCoin = { viewModel.increaseCoin() }
+
+
+                    )
+                }
+
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -260,12 +266,10 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
         ) {
 
 
-
-
         }
 
+    }
 
-}
 
 
 
