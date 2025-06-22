@@ -2,6 +2,7 @@ package com.example.habits
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -29,7 +33,7 @@ import java.util.Locale
 
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun TaskDetailScreen(task: Items, viewModel: TaskViewModel, navController: NavController) {
+fun TaskDetailScreen(task: Items, viewModel: TaskViewModel, navController: NavController, onNavigateBackToHome : () -> Unit) {
 
 
     val positiveClick by viewModel.getPositiveClicksForTask(task.id).collectAsState(initial = 0)
@@ -43,14 +47,17 @@ fun TaskDetailScreen(task: Items, viewModel: TaskViewModel, navController: NavCo
     ) {
 
 
+        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Going back to home page",modifier = Modifier.clickable {
+            onNavigateBackToHome()
+        })
 
-        Text(text = "Title", style = MaterialTheme.typography.headlineSmall)
+        Text(text = "Title", style = MaterialTheme.typography.bodyLarge)
 
         Text(text = task.title)
 
 
         Spacer(modifier = Modifier.height(12.dp))
-        Text(text = "Description", style = MaterialTheme.typography.headlineSmall)
+        Text(text = "Description", style = MaterialTheme.typography.bodyLarge)
 
         Text(text= task.description)
 

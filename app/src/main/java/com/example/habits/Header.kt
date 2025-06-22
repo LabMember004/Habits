@@ -71,7 +71,7 @@ fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.End
             ) {
-                Text("Health")
+                Text("Health", style = MaterialTheme.typography.bodyLarge )
                 ProgressBar(progress = health , color = Color.Red)
                 Spacer(modifier = Modifier.height(12.dp))
                 Text("Experience")

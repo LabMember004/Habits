@@ -120,7 +120,7 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(text = task.title, style = MaterialTheme.typography.bodyLarge)
-                Text(text = task.description, style = MaterialTheme.typography.bodySmall)
+                Text(text = task.description, style = MaterialTheme.typography.bodyLarge)
 
 
             }
