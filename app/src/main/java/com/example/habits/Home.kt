@@ -69,7 +69,15 @@ import kotlin.math.exp
 
 
 @Composable
-fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -> Unit , onIncreaseExperience: () -> Unit, onClick:() -> Unit , onIncreasePositiveClicks: () -> Unit, onIncreaseCoin:() -> Unit) {
+fun TaskItem(
+    task: Items,
+    onIncreaseHealth: () -> Unit,
+    onDecreaseHealth: () -> Unit,
+    onIncreaseExperience: () -> Unit,
+    onClick: () -> Unit,
+    onIncreasePositiveClicks: () -> Unit,
+    onIncreaseCoin: () -> Unit
+) {
 
 
     Card(
@@ -77,6 +85,10 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
             .fillMaxWidth()
 
             .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xfff0e4d8)
+        ) ,
+
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
@@ -91,25 +103,21 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(60.dp)
-                    .background(Color.Red)
+                    .background(Color(0xffedbc8a))
                     .clickable {
                         onDecreaseHealth()
                     },
                 contentAlignment = Alignment.Center
             ) {
-            Image(
-                painter = painterResource(id = R.drawable._491964_ui_minus_remove_delete_cancel_icon),
-                contentDescription = "ss",
+                Image(
+                    painter = painterResource(id = R.drawable._491964_ui_minus_remove_delete_cancel_icon),
+                    contentDescription = "ss",
 
-                modifier = imageModifier
-                    .size(32.dp)
-
-
-
-            )
+                    modifier = imageModifier
+                        .size(32.dp)
 
 
-
+                )
 
 
             }
@@ -131,7 +139,7 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(60.dp)
-                    .background(Color.Green)
+                    .background(Color(0xffed7d0c))
                     .clickable {
                         onIncreaseHealth()
                         onIncreaseExperience()
@@ -158,13 +166,11 @@ fun TaskItem( task: Items,  onIncreaseHealth: () -> Unit, onDecreaseHealth: () -
     Spacer(modifier = Modifier.height(16.dp))
 
 
-
 }
 
 
-
 @Composable
-fun Home(navController: NavController, viewModel: TaskViewModel ) {
+fun Home(navController: NavController, viewModel: TaskViewModel) {
 
     val tasks by viewModel.tasks.collectAsState()
 
@@ -179,7 +185,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
     var showDeathDialog by remember { mutableStateOf(false) }
 
 
-    if(showDeathDialog) {
+    if (showDeathDialog) {
         Reaching0HpPopUpMessage(
             onDismissRequest = {
                 showDeathDialog = false
@@ -201,95 +207,100 @@ fun Home(navController: NavController, viewModel: TaskViewModel ) {
 
     LaunchedEffect(health) {
         when {
-            health <=0f -> {
+            health <= 0f -> {
                 viewModel.resetLife()
                 showDeathDialog = true
             }
         }
     }
 
-        BackgroundWrapper {
-            Column(modifier = Modifier.fillMaxSize()) {
-                Header(
-                    health = health,
-                    experience = experience,
-                    level = level,
-                    coin = coin
-                )
-            }
+    BackgroundWrapper {
+        Column(modifier = Modifier.fillMaxSize()) {
+            Header(
+                health = health,
+                experience = experience,
+                level = level,
+                coin = coin
+            )
         }
+    }
     Spacer(modifier = Modifier.height(16.dp))
 
-        Column(modifier = Modifier.fillMaxSize()) {
-            Header(health = health, experience = experience, level = level, coin = coin)
+    Column(modifier = Modifier.fillMaxSize()) {
+        Header(health = health, experience = experience, level = level, coin = coin)
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-
-
-            LazyColumn {
-
-
-                items(tasks) { task ->
-                    TaskItem(task = task,
-                        onIncreaseHealth = {
-                            if (health < 1f) {
-                                viewModel.increaseHealth()
-                            }
-                        },
-                        onDecreaseHealth = { if (health > 0f) viewModel.decreaseHealth() },
-                        onIncreaseExperience = {
-                            if (experience <= 1f) {
-                                viewModel.increaseExperience()
-                            }
-
-
-                        },
-                        onClick = {
-                            navController.navigate("taskDetail/${task.id}")
-                        },
-                        onIncreasePositiveClicks = { viewModel.increasePositiveClicksForTask(task.id) },
-                        onIncreaseCoin = { viewModel.increaseCoin() }
-
-
-                    )
-                }
-
-            }
-        }
+        Spacer(modifier = Modifier.height(16.dp))
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(60.dp))
+            Text("Habits", style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(25.dp))
+        }
+        LazyColumn {
 
+
+            items(tasks) { task ->
+                TaskItem(task = task,
+                    onIncreaseHealth = {
+                        if (health < 1f) {
+                            viewModel.increaseHealth()
+                        }
+                    },
+                    onDecreaseHealth = { if (health > 0f) viewModel.decreaseHealth() },
+                    onIncreaseExperience = {
+                        if (experience <= 1f) {
+                            viewModel.increaseExperience()
+                        }
+
+
+                    },
+                    onClick = {
+                        navController.navigate("taskDetail/${task.id}")
+                    },
+                    onIncreasePositiveClicks = { viewModel.increasePositiveClicksForTask(task.id) },
+                    onIncreaseCoin = { viewModel.increaseCoin() }
+
+
+                )
+            }
 
         }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
 
     }
 
-
-
+}
 
 
 @Composable
 fun Reaching0HpPopUpMessage(onDismissRequest: () -> Unit) {
 
-    Dialog(onDismissRequest = {onDismissRequest()}) {
+    Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .padding(16.dp),
+                .padding(16.dp)
+            ,
             shape = RoundedCornerShape(16.dp)
         ) {
-            Text(text = "You have reached 0 health, therefore your pet died and you have to start at the beginning",
+            Text(
+                text = "You have reached 0 health, therefore your pet died and you have to start at the beginning",
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center),
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center
+            )
 
         }
     }

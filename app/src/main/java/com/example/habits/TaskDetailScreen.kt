@@ -39,6 +39,10 @@ fun TaskDetailScreen(task: Items, viewModel: TaskViewModel, navController: NavCo
     val positiveClick by viewModel.getPositiveClicksForTask(task.id).collectAsState(initial = 0)
 
 
+    BackgroundWrapper {
+        Column(modifier = Modifier.fillMaxSize()) {
+
+        }
 
     Column(
         modifier = Modifier.padding(16.dp).fillMaxSize(),
@@ -83,4 +87,5 @@ fun TaskDetailScreen(task: Items, viewModel: TaskViewModel, navController: NavCo
 
 
     }
+}
 }
