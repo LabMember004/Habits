@@ -83,63 +83,51 @@ fun TaskItem(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color(0xfff0e4d8)
-        ) ,
-
+        ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp), verticalAlignment = Alignment.CenterVertically
-        )
-
-        {
-
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(60.dp)
+                    .height(120.dp)
+                    .width(45.dp)
                     .background(Color(0xffedbc8a))
-                    .clickable {
-                        onDecreaseHealth()
-                    },
+                    .align(Alignment.CenterVertically)
+                    .clickable { onDecreaseHealth() },
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable._491964_ui_minus_remove_delete_cancel_icon),
-                    contentDescription = "ss",
-
-                    modifier = imageModifier
-                        .size(32.dp)
-
-
+                    contentDescription = "minus",
+                    modifier = Modifier.size(32.dp)
                 )
-
-
             }
+
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .align(alignment = Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(text = task.title, style = MaterialTheme.typography.bodyLarge)
-                Text(text = task.description, style = MaterialTheme.typography.bodyLarge)
-
-
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(text = task.description, style = MaterialTheme.typography.bodySmall)
             }
-
-
 
             Box(
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .width(60.dp)
+                    .height(120.dp)
+                    .width(45.dp)
                     .background(Color(0xffed7d0c))
+                    .align(Alignment.CenterVertically)
                     .clickable {
                         onIncreaseHealth()
                         onIncreaseExperience()
@@ -147,23 +135,17 @@ fun TaskItem(
                         onIncreaseCoin()
                     },
                 contentAlignment = Alignment.Center
-
             ) {
-
                 Image(
                     painter = painterResource(id = R.drawable._72525_plus_icon),
-                    contentDescription = "ss",
-
+                    contentDescription = "plus",
                     modifier = Modifier.size(32.dp)
-
-
                 )
-
-
             }
         }
     }
     Spacer(modifier = Modifier.height(16.dp))
+
 
 
 }
@@ -221,7 +203,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
             modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(60.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             Text("Habits", style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(25.dp))
         }
