@@ -117,7 +117,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun increaseLevel() {
         val newLevel = _level.value +1
-        _level.value = newLevel
         resetExp()
         saveLevel(newLevel)
 
@@ -165,12 +164,16 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         
     }
     fun increaseExperience() {
-        val baseExp = 0.5f
+        val baseExp = 0.1f
         val bonusMultiplier = 1 + (_doubleXPLevel.value * 0.3f)
         val gainedExp = baseExp * bonusMultiplier
         val newExperience = _experience.value + gainedExp
         _experience.value = newExperience
         saveExperience(newExperience)
+
+        if(_experience.value >= 1f) {
+            increaseLevel()
+        }
 
 
         
@@ -195,7 +198,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         val bonusMultiplier = 1+ (_doubleCoinLevel.value *1)
         val gainedCoin = baseCoin * bonusMultiplier
         val newCoin = _coin.value + gainedCoin
-        _coin.value = newCoin
+
         saveCoin(newCoin)
     }
     fun resetExp() {
@@ -272,8 +275,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
                 }
                 is ShopEffect.DoubleCoin -> {
-                    val newDoubleCoin = _doubleCoinLevel.value +1
-                    _doubleCoinLevel.value = newCoin
+                    val newDoubleCoin = _doubleCoinLevel.value + 1
+                    _doubleCoinLevel.value = newDoubleCoin
                     viewModelScope.launch {
                         taskDataStore.saveDoubleCoinLevel(newDoubleCoin)
                     }

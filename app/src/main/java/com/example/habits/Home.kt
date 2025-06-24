@@ -195,15 +195,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
     }
 
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { experience }
-            .distinctUntilChanged()
-            .collect { exp ->
-                if (exp >= 1f) {
-                    viewModel.increaseLevel()
-                }
-            }
-    }
+
 
     LaunchedEffect(health) {
         when {
@@ -216,14 +208,9 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
 
     BackgroundWrapper {
         Column(modifier = Modifier.fillMaxSize()) {
-            Header(
-                health = health,
-                experience = experience,
-                level = level,
-                coin = coin
-            )
+
         }
-    }
+
     Spacer(modifier = Modifier.height(16.dp))
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -280,7 +267,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
     }
 
 }
-
+}
 
 @Composable
 fun Reaching0HpPopUpMessage(onDismissRequest: () -> Unit) {
