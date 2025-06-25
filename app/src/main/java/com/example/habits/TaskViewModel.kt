@@ -50,6 +50,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val _shopMessage = MutableStateFlow<String?>(null)
     val shopMessage:StateFlow<String?> = _shopMessage
 
+    val coinGainedPopUp = MutableStateFlow(0)
 
 
 
@@ -194,12 +195,21 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun increaseCoin() {
+        val previousCoin = _coin.value
         val baseCoin = 3
         val bonusMultiplier = 1+ (_doubleCoinLevel.value *1)
         val gainedCoin = baseCoin * bonusMultiplier
         val newCoin = _coin.value + gainedCoin
 
         saveCoin(newCoin)
+        showCoinGained(previousCoin , newCoin)
+    }
+
+     fun showCoinGained(previousCoin : Int , newCoin: Int) {
+        val coinGained = newCoin - previousCoin
+         coinGainedPopUp.value = coinGained
+
+        Log.d("TaskViewModel", "you gained $coinGained coin")
     }
     fun resetExp() {
         val newExp = _experience.value - 1f
@@ -291,7 +301,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun clearShopMessage() {
         _shopMessage.value = null
     }
-
 
 
 

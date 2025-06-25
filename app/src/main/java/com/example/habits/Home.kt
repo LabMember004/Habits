@@ -2,13 +2,14 @@ package com.example.habits
 
 import android.app.Dialog
 import android.util.Log
+import android.view.RoundedCorner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,6 +37,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -46,6 +50,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -64,7 +69,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import kotlin.math.exp
 
 
@@ -78,7 +85,6 @@ fun TaskItem(
     onIncreasePositiveClicks: () -> Unit,
     onIncreaseCoin: () -> Unit
 ) {
-
 
     Card(
         modifier = Modifier
@@ -133,6 +139,8 @@ fun TaskItem(
                         onIncreaseExperience()
                         onIncreasePositiveClicks()
                         onIncreaseCoin()
+
+
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -163,6 +171,9 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
     val experience by viewModel.experience.collectAsState()
 
     val coin by viewModel.coin.collectAsState()
+
+    val coinGained by viewModel.coinGainedPopUp.collectAsState()
+
 
     var showDeathDialog by remember { mutableStateOf(false) }
 
@@ -247,6 +258,7 @@ fun Home(navController: NavController, viewModel: TaskViewModel) {
 
 
     }
+        SnackBar(coinEarned = coinGained)
 
 }
 }
@@ -276,5 +288,41 @@ fun Reaching0HpPopUpMessage(onDismissRequest: () -> Unit) {
 }
 
 
+@Composable
+fun SnackBar(coinEarned: Int) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(coinEarned) {
+        if (coinEarned > 0) {
+            coroutineScope.launch {
+                snackBarHostState.showSnackbar("You Earned $coinEarned Coins")
+            }
+        }
+    }
 
+    Box(modifier = Modifier.fillMaxSize()) {
+        SnackbarHost(
+            hostState = snackBarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 20.dp),
+
+            snackbar = { snackbarData ->
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0xFF4CAF50))
+                        .widthIn(max = 250.dp)
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                ) {
+                    Text(
+                        text = snackbarData.visuals.message,
+                        color = Color.White,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+        )
+    }
+}
