@@ -96,7 +96,7 @@ fun TaskItem(
         ) {
             Box(
                 modifier = Modifier
-                    .height(120.dp)
+                    .height(100.dp)
                     .width(45.dp)
                     .background(Color(0xffedbc8a))
                     .align(Alignment.CenterVertically)
@@ -124,7 +124,7 @@ fun TaskItem(
 
             Box(
                 modifier = Modifier
-                    .height(120.dp)
+                    .height(100.dp)
                     .width(45.dp)
                     .background(Color(0xffed7d0c))
                     .align(Alignment.CenterVertically)

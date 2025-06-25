@@ -38,6 +38,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,9 +47,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
 
-    val groupIndex = level / 5
-
-    val imageRes = petImages.getOrNull(groupIndex) ?: R.drawable.ic_launcher_background
+    val petImagesRes = when {
+        health > 0.8f -> R.drawable.pet_happy_state
+        health > 0.2f -> R.drawable.pet_neutral_state
+        else -> R.drawable.pet_sad_state
+    }
 
 
 
@@ -63,7 +67,7 @@ fun Header(health: Float ,  experience: Float , level: Int , coin: Int ) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
-                painter = painterResource(id = R.drawable.pet_happy_state),
+                painter = painterResource(petImagesRes),
                 modifier = Modifier.size(150.dp),
                 contentDescription = "Test"
             )
